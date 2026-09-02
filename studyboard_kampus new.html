@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Studyboard — Roadmap Studi ke Luar Negeri</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --maroon:#5C1A2E;
+    --maroon-dark:#3D0F1E;
+    --cream:#FBF7EF;
+    --card:#FFFFFF;
+    --gold:#B7913A;
+    --gold-light:#F0E3C2;
+    --sage:#5C8374;
+    --ink:#2B2320;
+    --muted:#756B60;
+    --line:#E3D6AE;
+    --band10:#2C4A6E; --band10-bg:#E8EEF5;
+    --band11:#5A3A73; --band11-bg:#F1E9F5;
+    --band12:#355B37; --band12-bg:#E9F2E9;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    font-family:'Source Sans 3', sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 0 80px;}
+
+  .ribbon{
+    height:8px;
+    background:var(--gold);
+  }
+
+  header.hero{
+    position:relative;
+    padding:40px 32px 40px;
+    background:var(--maroon);
+    color:#fff;
+    overflow:hidden;
+    border-bottom:8px solid var(--gold);
+  }
+  header.hero::after{
+    content:"";
+    position:absolute;
+    right:-50px;top:-50px;
+    width:200px;height:200px;
+    border:1.5px solid rgba(255,255,255,0.14);
+    border-radius:50%;
+  }
+  header.hero::before{
+    content:"";
+    position:absolute;
+    right:20px;bottom:-60px;
+    width:140px;height:140px;
+    border:1.5px solid rgba(255,255,255,0.1);
+    border-radius:50%;
+  }
+  .eyebrow{
+    font-size:12px;
+    color:var(--gold-light);
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin:0 0 12px;
+  }
+  h1{
+    font-family:'Playfair Display', serif;
+    font-weight:600;
+    font-size:32px;
+    line-height:1.2;
+    margin:0 0 14px;
+    max-width:480px;
+  }
+  .hero p{
+    font-size:15px;
+    line-height:1.6;
+    color:#D7E0E8;
+    max-width:440px;
+    margin:0 0 26px;
+  }
+  .progress-row{
+    display:flex;
+    align-items:center;
+    gap:14px;
+  }
+  .progress-track{
+    flex:1;
+    height:8px;
+    background:rgba(255,255,255,0.18);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--gold);
+    width:0%;
+    transition:width 0.4s ease;
+  }
+  .progress-label{
+    font-size:13px;
+    color:var(--gold-light);
+    white-space:nowrap;
+    min-width:64px;
+    text-align:right;
+  }
+
+  .route{
+    position:relative;
+    margin-top:40px;
+    padding:0 24px;
+  }
+  .route::before{
+    content:"";
+    position:absolute;
+    left:27px;
+    top:8px;
+    bottom:8px;
+    width:2px;
+    background-image:linear-gradient(var(--line) 60%, transparent 0%);
+    background-size:2px 12px;
+    background-repeat:repeat-y;
+  }
+
+  .stop{
+    position:relative;
+    padding-left:70px;
+    margin-bottom:36px;
+  }
+  .stop:last-child{margin-bottom:0;}
+  .stamp{
+    position:absolute;
+    left:0;top:0;
+    width:56px;height:56px;
+    border-radius:50%;
+    background:var(--card);
+    border:2.5px solid var(--gold);
+    box-shadow:0 0 0 3px var(--maroon);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Playfair Display', serif;
+    font-weight:700;
+    font-size:18px;
+    color:var(--maroon);
+    z-index:1;
+  }
+  .stop.done .stamp{
+    background:var(--sage);
+    border-color:var(--sage);
+    box-shadow:0 0 0 3px var(--maroon);
+    color:#fff;
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-top:4px solid var(--band);
+    border-radius:10px;
+    padding:22px 24px 20px;
+  }
+  .card-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:4px;
+  }
+  .stage-title{
+    font-family:'Playfair Display', serif;
+    font-size:19px;
+    font-weight:600;
+    margin:0;
+    color:var(--band);
+  }
+  .stage-badge{
+    display:inline-block;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--band);
+    background:var(--band-bg);
+    padding:3px 10px;
+    border-radius:20px;
+    margin-bottom:8px;
+  }
+  .stage-sub{
+    font-size:13px;
+    color:var(--muted);
+    margin:2px 0 16px;
+  }
+  .stage-count{
+    font-size:12px;
+    color:var(--band);
+    font-weight:600;
+    white-space:nowrap;
+    padding-top:3px;
+  }
+
+  .item{
+    display:flex;
+    align-items:flex-start;
+    gap:11px;
+    padding:9px 0;
+    border-top:1px solid #F0ECE0;
+  }
+  .item:first-of-type{border-top:none;}
+  .item input[type="checkbox"]{
+    margin-top:3px;
+    width:17px;height:17px;
+    accent-color:var(--sage);
+    flex-shrink:0;
+    cursor:pointer;
+  }
+  .item label{
+    font-size:14.5px;
+    line-height:1.5;
+    cursor:pointer;
+  }
+  .item.checked label{
+    color:var(--muted);
+    text-decoration:line-through;
+  }
+  .item .note{
+    display:block;
+    font-size:12.5px;
+    color:var(--muted);
+    margin-top:2px;
+  }
+
+  footer{
+    margin-top:44px;
+    text-align:center;
+    font-size:12px;
+    color:var(--muted);
+    font-style:italic;
+    letter-spacing:0.02em;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero" style="border-radius:0;">
+    <p class="eyebrow">studyboard</p>
+    <h1>Peta jalan menuju kampus impian di luar negeri</h1>
+    <p>Tiga tahap, dari kelas 10 sampai 12 — riset, persiapan teknis, sampai apply. Centang setiap langkah yang sudah selesai.</p>
+    <div class="progress-row">
+      <div class="progress-track"><div class="progress-fill" id="overall-fill"></div></div>
+      <span class="progress-label" id="overall-label">0 / 0 selesai</span>
+    </div>
+  </header>
+
+  <div class="route" id="route"></div>
+
+  <footer>Studyboard — dibuat sebagai produk TPK</footer>
+</div>
+
+<script>
+const stages = [
+  {
+    id: 10,
+    band: "var(--band10)",
+    bandBg: "var(--band10-bg)",
+    badge: "Fase pengenalan",
+    photo: "https://images.unsplash.com/photo-1619512673224-91cfb2688284?fm=jpg&q=60&w=700&auto=format&fit=crop",
+    title: "Kelas 10 — eksplorasi dan fondasi",
+    sub: "Mulai kenali arah tujuan dan bangun modal awal",
+    items: [
+      { text: "Riset negara dan kampus tujuan", note: "bandingkan 3-5 negara, catat biaya hidup dan biaya kuliah" },
+      { text: "Cari skema beasiswa yang cocok", note: "misalnya LPDP, Chevening, atau beasiswa kampus" },
+      { text: "Susun daftar jurusan prioritas" },
+      { text: "Ikut ekskul atau organisasi untuk portofolio" },
+      { text: "Ikut minimal satu lomba atau kompetisi akademik" },
+      { text: "Bikin CV pelajar pertama" }
+    ]
+  },
+  {
+    id: 11,
+    band: "var(--band11)",
+    bandBg: "var(--band11-bg)",
+    badge: "Fase persiapan",
+    photo: "https://images.unsplash.com/photo-1606761568499-6d2451b23c66?fm=jpg&q=60&w=700&auto=format&fit=crop",
+    title: "Kelas 11 — persiapan teknis",
+    sub: "Waktunya urus dokumen dan tes standar",
+    items: [
+      { text: "Riset syarat visa pelajar negara tujuan" },
+      { text: "Draft personal statement atau essay" },
+      { text: "Ikut kelas dan tryout IELTS" },
+      { text: "Ikut kelas dan tryout SAT" },
+      { text: "Ikut program exchange atau summer school", note: "opsional, tapi menambah nilai portofolio" },
+      { text: "Update portofolio dan kumpulkan sertifikat" }
+    ]
+  },
+  {
+    id: 12,
+    band: "var(--band12)",
+    bandBg: "var(--band12-bg)",
+    badge: "Fase eksekusi",
+    photo: "https://images.unsplash.com/photo-1627556704290-2b1f5853ff78?fm=jpg&q=60&w=700&auto=format&fit=crop",
+    title: "Kelas 12 — eksekusi dan apply",
+    sub: "Finalisasi berkas dan kirim aplikasi",
+    items: [
+      { text: "Finalisasi daftar kampus", note: "kelompokkan jadi reach, match, dan safety" },
+      { text: "Minta surat rekomendasi dari guru" },
+      { text: "Ambil tes IELTS dan SAT resmi" },
+      { text: "Submit aplikasi dan essay final" },
+      { text: "Latihan interview" },
+      { text: "Urus visa setelah dapat LoA" }
+    ]
+  }
+];
+
+const route = document.getElementById('route');
+
+stages.forEach((stage, si) => {
+  const stop = document.createElement('div');
+  stop.className = 'stop';
+  stop.dataset.stage = si;
+
+  const itemsHtml = stage.items.map((it, ii) => {
+    const id = 's' + si + 'i' + ii;
+    return `<div class="item" data-id="${id}">
+      <input type="checkbox" id="${id}">
+      <label for="${id}">${it.text}${it.note ? `<span class="note">${it.note}</span>` : ''}</label>
+    </div>`;
+  }).join('');
+
+  stop.innerHTML = `
+    <div class="stamp">${stage.id}</div>
+    <div class="card" style="--band:${stage.band}; --band-bg:${stage.bandBg};">
+      <div class="card-head">
+        <div>
+          <span class="stage-badge">${stage.badge}</span>
+          <p class="stage-title">${stage.title}</p>
+          <p class="stage-sub">${stage.sub}</p>
+        </div>
+        <span class="stage-count" id="count-${si}">0/${stage.items.length}</span>
+      </div>
+      ${itemsHtml}
+    </div>
+  `;
+  route.appendChild(stop);
+});
+
+function updateProgress(){
+  let totalDone = 0, totalAll = 0;
+  stages.forEach((stage, si) => {
+    const boxes = document.querySelectorAll(`.stop[data-stage="${si}"] input[type="checkbox"]`);
+    let done = 0;
+    boxes.forEach(b => { if(b.checked) done++; });
+    totalDone += done;
+    totalAll += boxes.length;
+    document.getElementById(`count-${si}`).textContent = `${done}/${boxes.length}`;
+    document.querySelector(`.stop[data-stage="${si}"]`).classList.toggle('done', done === boxes.length);
+  });
+  const pct = totalAll ? Math.round((totalDone/totalAll)*100) : 0;
+  document.getElementById('overall-fill').style.width = pct + '%';
+  document.getElementById('overall-label').textContent = `${totalDone} / ${totalAll} selesai`;
+}
+
+route.addEventListener('change', (e) => {
+  if(e.target.type === 'checkbox'){
+    e.target.closest('.item').classList.toggle('checked', e.target.checked);
+    updateProgress();
+  }
+});
+
+updateProgress();
+</script>
+</body>
+</html>
