@@ -202,6 +202,53 @@
     padding-top:3px;
   }
 
+  .stage-actions{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px solid #F0ECE0;
+  }
+
+  .finish-btn{
+    border:0;
+    border-radius:8px;
+    padding:10px 16px;
+    background:var(--band);
+    color:#fff;
+    font-family:'Source Sans 3', sans-serif;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    transition:opacity .2s ease, transform .2s ease;
+  }
+
+  .finish-btn:hover:not(:disabled){
+    opacity:.9;
+    transform:translateY(-1px);
+  }
+
+  .finish-btn:disabled{
+    opacity:.45;
+    cursor:not-allowed;
+  }
+
+  .stop.stage-completed .card{
+    opacity:.78;
+  }
+
+  .stop.stage-completed .finish-btn{
+    background:var(--sage);
+    opacity:1;
+  }
+
+  .stage-status{
+    font-size:12px;
+    color:var(--sage);
+    font-weight:600;
+    margin:8px 0 0;
+  }
+
   .item{
     display:flex;
     align-items:flex-start;
@@ -343,6 +390,11 @@ stages.forEach((stage, si) => {
         <span class="stage-count" id="count-${si}">0/${stage.items.length}</span>
       </div>
       ${itemsHtml}
+      <div class="stage-actions">
+        <button class="finish-btn" type="button" data-finish="${si}" disabled>
+          Tandai kelas selesai
+        </button>
+      </div>
     </div>
   `;
   route.appendChild(stop);
@@ -350,24 +402,74 @@ stages.forEach((stage, si) => {
 
 function updateProgress(){
   let totalDone = 0, totalAll = 0;
+
   stages.forEach((stage, si) => {
-    const boxes = document.querySelectorAll(`.stop[data-stage="${si}"] input[type="checkbox"]`);
+    const stop = document.querySelector(`.stop[data-stage="${si}"]`);
+    const boxes = stop.querySelectorAll('input[type="checkbox"]');
+    const button = stop.querySelector('.finish-btn');
+
     let done = 0;
     boxes.forEach(b => { if(b.checked) done++; });
+
     totalDone += done;
     totalAll += boxes.length;
+
     document.getElementById(`count-${si}`).textContent = `${done}/${boxes.length}`;
-    document.querySelector(`.stop[data-stage="${si}"]`).classList.toggle('done', done === boxes.length);
+
+    // Tombol hanya aktif kalau ada minimal satu tugas yang dicentang
+    // dan kelas tersebut belum dikonfirmasi selesai.
+    if(!stop.classList.contains('stage-completed')){
+      button.disabled = done === 0;
+      button.textContent = 'Tandai kelas selesai';
+    }
   });
-  const pct = totalAll ? Math.round((totalDone/totalAll)*100) : 0;
+
+  const completedStages = document.querySelectorAll('.stop.stage-completed').length;
+  const pct = stages.length ? Math.round((completedStages / stages.length) * 100) : 0;
+
   document.getElementById('overall-fill').style.width = pct + '%';
-  document.getElementById('overall-label').textContent = `${totalDone} / ${totalAll} selesai`;
+  document.getElementById('overall-label').textContent =
+    `${completedStages} / ${stages.length} kelas selesai`;
+}
+
+function completeStage(si){
+  const stop = document.querySelector(`.stop[data-stage="${si}"]`);
+  const button = stop.querySelector('.finish-btn');
+
+  if(stop.classList.contains('stage-completed')) return;
+
+  const checked = stop.querySelectorAll('input[type="checkbox"]:checked').length;
+  if(checked === 0) return;
+
+  stop.classList.add('stage-completed');
+  button.textContent = '✓ Kelas selesai';
+  button.disabled = true;
+
+  // Setelah kelas dikonfirmasi, tugas di kelas itu tidak bisa diubah lagi.
+  stop.querySelectorAll('input[type="checkbox"]').forEach(box => {
+    box.disabled = true;
+  });
+
+  // Buka kelas berikutnya agar alurnya berurutan.
+  const nextStop = document.querySelector(`.stop[data-stage="${si + 1}"]`);
+  if(nextStop){
+    nextStop.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  updateProgress();
 }
 
 route.addEventListener('change', (e) => {
   if(e.target.type === 'checkbox'){
     e.target.closest('.item').classList.toggle('checked', e.target.checked);
     updateProgress();
+  }
+});
+
+route.addEventListener('click', (e) => {
+  const button = e.target.closest('.finish-btn');
+  if(button){
+    completeStage(Number(button.dataset.finish));
   }
 });
 
